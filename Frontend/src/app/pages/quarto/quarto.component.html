@@ -1,0 +1,61 @@
+<nb-card>
+    <nb-card-header>
+      Cadastro de Quarto
+    </nb-card-header>
+  
+    <nb-card-body>
+      <button style="margin-bottom: 1rem;" nbButton status="primary" (click)="openModalQuarto(null)">Novo</button>
+      <ng2-smart-table #ng2TbQuarto [settings]="tbQuartoConfig" [source]="tbQuartoData" (edit)="openModalQuarto($event)"
+        (delete)="openModalExclusion($event)">
+      </ng2-smart-table>
+    </nb-card-body>
+  </nb-card>
+  
+  <ng-template #dialogQuarto let-data let-ref="dialogRef">
+    <nb-card style="width: 25em">
+      <nb-card-header>Cadastro de Quarto ({{ findOperation() }})</nb-card-header>
+      <nb-card-body>
+        <form [formGroup]="formQuarto" autocomplete="off">
+  
+          <div class="form-group">
+            <label for="numeroQuarto">Número do Quarto *</label>
+            <input class="form-control" id="numeroQuarto" formControlName="numeroQuarto">
+          </div>
+  
+          <div class="form-group">
+            <label for="tipoQuarto">Tipo do Quarto *</label>
+            <input id="tipoQuarto" class="form-control" formControlName="tipoQuarto">
+          </div>
+  
+          <div class="form-group">
+            <label for="statusQuarto">Status do Quarto *</label>
+            <input id="statusQuarto" class="form-control" formControlName="statusQuarto">
+          </div>
+  
+          <div class="form-group" [hidden]="isAdd()">
+            <label for="creation">Data Criação</label>
+            <input id="creation" class="form-control" formControlName="creation"
+              [value]="formQuarto.get('creation').value | date:'dd/MM/yyyy HH:mm:ss'">
+          </div>
+        </form>
+      </nb-card-body>
+      <nb-card-footer>
+        <button nbButton (click)="ref.close()">Cancelar</button>
+        <button class="btn-action-modal" nbButton status="primary" (click)="btnSave($event);">Salvar</button>
+      </nb-card-footer>
+    </nb-card>
+  </ng-template>
+  
+  <ng-template #dialogDelete let-data let-ref="dialogRef">
+    <nb-card>
+      <nb-card-header>Excluir Quarto</nb-card-header>
+      <nb-card-body>
+        Tem certeza que deseja excluir o quarto de número <span style="font-weight: bold">{{ data }}</span>?
+      </nb-card-body>
+      <nb-card-footer>
+        <button nbButton (click)="ref.close()">Cancelar</button>
+        <button class="btn-action-modal" nbButton status="danger" (click)="btnDelete($event);">Excluir</button>
+      </nb-card-footer>
+    </nb-card>
+  </ng-template>
+  

@@ -1,0 +1,63 @@
+<nb-card>
+  <nb-card-header>
+      Cadastro de Hotel
+  </nb-card-header>
+
+  <nb-card-body>
+      <button style="margin-bottom: 1rem;" nbButton status="primary" (click)="openModalHotel(null)">Novo</button>   
+      <ng2-smart-table #ng2TbHotel 
+        [settings]="tbHotelConfig" 
+        [source]="tbHotelData" 
+        (edit)="openModalHotel($event)" 
+        (delete)="openModalExclusion($event)">          
+      </ng2-smart-table>
+  </nb-card-body>
+</nb-card>
+
+<ng-template #dialogHotel let-data let-ref="dialogRef">
+  <nb-card style="width: 25em">
+    <nb-card-header>Cadastro de Hotel ({{ findOperation() }})</nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="formHotel" autocomplete="off">
+        
+        <div class="form-group">
+          <label for="nome">Nome *</label>
+          <input class="form-control" id="nome" formControlName="nome">
+        </div>  
+        
+        <div class="form-group">
+          <label for="endereco">Endereço *</label>
+          <input id="endereco" class="form-control" formControlName="endereco">
+        </div>
+
+        <div class="form-group">
+          <label for="telefone">Telefone *</label>
+          <input id="telefone" class="form-control" formControlName="telefone">
+        </div>
+
+        <div class="form-group" [hidden]="isAdd()">
+          <label for="creation">Data Criação</label>
+          <input id="creation" class="form-control" formControlName="creation" 
+            [value]="formHotel.get('creation').value | date:'dd/MM/yyyy HH:mm:ss'">
+        </div>
+      </form>
+    </nb-card-body>
+    <nb-card-footer>        
+      <button nbButton (click)="ref.close()">Cancelar</button>
+      <button class="btn-action-modal" nbButton status="primary" (click)="btnSave($event);">Salvar</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #dialogDelete let-data let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header>Excluir Hotel</nb-card-header>
+    <nb-card-body>
+      Tem certeza que deseja excluir o hotel <span style="font-weight: bold">{{ data }}</span>?  
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton (click)="ref.close()">Cancelar</button>
+      <button class="btn-action-modal" nbButton status="danger" (click)="btnDelete($event);">Excluir</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
